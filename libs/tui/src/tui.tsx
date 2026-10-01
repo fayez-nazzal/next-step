@@ -43,9 +43,40 @@ const BIG_GLYPHS: Readonly<Record<string, readonly string[]>> = {
   "7": ["11111", "00001", "00010", "00100", "00100"],
   "8": ["01110", "10001", "01110", "10001", "01110"],
   "9": ["01110", "10001", "01111", "00001", "11110"],
+  "!": ["1", "1", "1", "0", "1"],
+  '"': ["101", "101", "000", "000", "000"],
+  "#": ["01010", "11111", "01010", "11111", "01010"],
+  $: ["01111", "10100", "01110", "00101", "11110"],
+  "%": ["11001", "11010", "00100", "01011", "10011"],
+  "&": ["01100", "10010", "01100", "10010", "01101"],
+  "'": ["1", "1", "0", "0", "0"],
+  "(": ["001", "010", "010", "010", "001"],
+  ")": ["100", "010", "010", "010", "100"],
+  "*": ["000", "101", "010", "101", "000"],
+  "+": ["000", "010", "111", "010", "000"],
+  ",": ["0", "0", "0", "1", "1"],
+  "-": ["000", "000", "111", "000", "000"],
+  ".": ["0", "0", "0", "0", "1"],
+  "/": ["001", "001", "010", "100", "100"],
+  ":": ["0", "1", "0", "1", "0"],
+  ";": ["0", "1", "0", "1", "1"],
+  "<": ["001", "010", "100", "010", "001"],
+  "=": ["000", "111", "000", "111", "000"],
+  ">": ["100", "010", "001", "010", "100"],
+  "?": ["11110", "00001", "00110", "00000", "00100"],
+  "@": ["01110", "10001", "10111", "10000", "01110"],
+  "[": ["11", "10", "10", "10", "11"],
+  "\\": ["100", "100", "010", "001", "001"],
+  "]": ["11", "01", "01", "01", "11"],
+  "^": ["010", "101", "000", "000", "000"],
+  _: ["00000", "00000", "00000", "00000", "11111"],
+  "`": ["10", "01", "00", "00", "00"],
+  "{": ["001", "010", "110", "010", "001"],
+  "|": ["1", "1", "1", "1", "1"],
+  "}": ["100", "010", "011", "010", "100"],
+  "~": ["000", "010", "101", "000", "000"],
   " ": ["0", "0", "0", "0", "0"],
 };
-
 function renderActiveStep(title: string, terminalWidth: number) {
   const characters = [...title.toLocaleUpperCase()];
   const maxCharacters = Math.max(1, Math.floor((terminalWidth + 1) / 6));
@@ -62,7 +93,8 @@ function renderActiveStep(title: string, terminalWidth: number) {
         chunk
           .map((char) => {
             const glyph = BIG_GLYPHS[char] ?? BIG_GLYPHS[" "]!;
-            const rowText = (glyph[row] ?? "0").replaceAll("1", "█").replaceAll("0", " ");
+            const pixel = /^[A-Z0-9]$/.test(char) ? "█" : "#";
+            const rowText = (glyph[row] ?? "0").replaceAll("1", pixel).replaceAll("0", " ");
             return " ".repeat(Math.max(0, rowCount - rowText.length)) + rowText;
           })
           .join(" "),
@@ -86,7 +118,7 @@ export function Tui({ application, track }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [editor, setEditor] = useState<Editor>(null);
   const [error, setError] = useState("");
-  const [terminalFocused, setTerminalFocused] = useState(false);
+  const [terminalFocused, setTerminalFocused] = useState(true);
   const titleEditor = useRef<InputRenderable>(null);
   const descriptionEditor = useRef<TextareaRenderable>(null);
 
@@ -215,12 +247,7 @@ export function Tui({ application, track }: Props) {
           >
             <text width="100%" textAlign="center" fg="#75d5c3">
               <strong>
-                {steps[0]
-                  ? renderActiveStep(
-                      `${terminalFocused && selected === steps[0].id ? "› " : ""}${steps[0].title}`,
-                      terminalWidth - 4,
-                    )
-                  : "Nothing queued."}
+                {steps[0] ? renderActiveStep(steps[0].title, terminalWidth - 4) : "Nothing queued."}
               </strong>
             </text>
             {steps[0]?.description && (

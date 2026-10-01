@@ -1,0 +1,11 @@
+{
+  "name": "persistence",
+  "projectType": "library",
+  "sourceRoot": "libs/persistence/src",
+  "tags": ["layer:persistence"],
+  "targets": {
+    "typecheck": {
+      "command": "tsc -p libs/persistence/tsconfig.json"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@next-step/tui",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@next-step/application": "workspace:*",
+    "@next-step/domain": "workspace:*",
+    "@opentui/core": "0.5.14",
+    "@opentui/react": "0.5.14",
+    "react": "19.3.0"
+  }
+}

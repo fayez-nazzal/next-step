@@ -1,0 +1,13 @@
+{
+  "name": "@next-step/persistence",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@next-step/application": "workspace:*",
+    "@next-step/domain": "workspace:*",
+    "yaml": "2.9.1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "plugins": [{ "plugin": "@nx/oxlint", "options": { "targetName": "lint" } }],
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/bun.lock"]
+  },
+  "targetDefaults": {
+    "typecheck": { "cache": true, "inputs": ["default", "^default"] },
+    "build": {
+      "cache": true,
+      "inputs": ["default", "^default"],
+      "outputs": ["{workspaceRoot}/dist"]
+    }
+  }
+}

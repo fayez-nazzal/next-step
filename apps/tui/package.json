@@ -1,0 +1,11 @@
+{
+  "name": "@next-step/tui-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@next-step/application": "workspace:*",
+    "@next-step/persistence": "workspace:*",
+    "@next-step/tui": "workspace:*"
+  }
+}

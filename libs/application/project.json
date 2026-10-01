@@ -1,0 +1,11 @@
+{
+  "name": "application",
+  "projectType": "library",
+  "sourceRoot": "libs/application/src",
+  "tags": ["layer:application"],
+  "targets": {
+    "typecheck": {
+      "command": "tsc -p libs/application/tsconfig.json"
+    }
+  }
+}

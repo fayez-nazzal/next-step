@@ -1,0 +1,11 @@
+{
+  "name": "@next-step/application",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@next-step/domain": "workspace:*"
+  }
+}

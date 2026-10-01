@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["bun"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@opentui/react",
+    "paths": {
+      "@next-step/domain": ["./libs/domain/src/index.ts"],
+      "@next-step/application": ["./libs/application/src/index.ts"],
+      "@next-step/persistence": ["./libs/persistence/src/index.ts"],
+      "@next-step/tui": ["./libs/tui/src/index.ts"]
+    }
+  }
+}

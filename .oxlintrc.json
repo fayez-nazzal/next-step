@@ -1,0 +1,80 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": { "correctness": "error" },
+  "overrides": [
+    {
+      "files": ["libs/domain/src/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["node:*", "bun", "bun:*", "@next-step/*", "react*", "@opentui/*", "yaml"],
+            "paths": ["fs", "path", "child_process", "os"]
+          }
+        ],
+        "no-restricted-globals": ["error", "process", "Bun"]
+      }
+    },
+    {
+      "files": ["libs/application/src/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              "@next-step/application",
+              "@next-step/persistence",
+              "@next-step/tui",
+              "node:*",
+              "bun",
+              "bun:*",
+              "react*",
+              "@opentui/*",
+              "yaml"
+            ],
+            "paths": ["fs", "path", "child_process", "os"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["libs/persistence/src/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@next-step/persistence", "@next-step/tui", "react*", "@opentui/*"],
+            "paths": ["fs", "path", "child_process", "os"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["libs/tui/src/**/*"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@next-step/persistence", "yaml", "node:*", "bun", "bun:*"],
+            "paths": ["fs", "path", "child_process", "os"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["apps/tui/src/**/*"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["@opentui/*", "react*", "yaml"],
+            "paths": ["fs", "path", "child_process", "os"]
+          }
+        ]
+      }
+    }
+  ],
+  "ignorePatterns": ["node_modules", "dist", "coverage", ".nx"],
+  "env": { "builtin": true }
+}

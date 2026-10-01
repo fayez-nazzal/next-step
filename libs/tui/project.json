@@ -1,0 +1,11 @@
+{
+  "name": "tui",
+  "projectType": "library",
+  "sourceRoot": "libs/tui/src",
+  "tags": ["layer:tui"],
+  "targets": {
+    "typecheck": {
+      "command": "tsc -p libs/tui/tsconfig.json"
+    }
+  }
+}

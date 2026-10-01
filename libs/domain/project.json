@@ -1,0 +1,11 @@
+{
+  "name": "domain",
+  "projectType": "library",
+  "sourceRoot": "libs/domain/src",
+  "tags": ["layer:domain"],
+  "targets": {
+    "typecheck": {
+      "command": "tsc -p libs/domain/tsconfig.json"
+    }
+  }
+}

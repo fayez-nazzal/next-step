@@ -1,0 +1,14 @@
+{
+  "name": "tui-app",
+  "projectType": "application",
+  "sourceRoot": "apps/tui/src",
+  "tags": ["layer:app"],
+  "targets": {
+    "typecheck": {
+      "command": "tsc -p apps/tui/tsconfig.json"
+    },
+    "build": {
+      "command": "bun build --compile apps/tui/src/main.ts --outfile dist/next-step"
+    }
+  }
+}

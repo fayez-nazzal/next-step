@@ -196,7 +196,13 @@ export function Tui({ application, track }: Props) {
         padding={1}
         scrollY
       >
-        <box flexDirection="column" width="100%" gap={1} alignItems="center" justifyContent="center">
+        <box
+          flexDirection="column"
+          width="100%"
+          gap={1}
+          alignItems="center"
+          justifyContent="center"
+        >
           <box
             width="100%"
             flexDirection="column"

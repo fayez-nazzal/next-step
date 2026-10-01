@@ -154,6 +154,8 @@ export function Tui({ application, track }: Props) {
       }
       return;
     }
+    // Chords such as Ctrl+C belong to the terminal and the quit handler, not to step shortcuts.
+    if (key.ctrl || key.meta || key.option || key.super || key.hyper) return;
     const selectedStep = steps.find((step) => step.id === selected);
     if (key.name === "escape") {
       setSelected(null);

@@ -46,6 +46,8 @@ Most keys act on the selected step, and the first step starts out selected.
 
 While typing, press `Enter` to save or `Esc` to cancel.
 
+The big title can show A to Z, numbers and spaces. Anything else is left blank. Keep titles short and simple, and use the description for details.
+
 ## Where your steps are saved
 
 Steps live in `.next-step/state.yml` inside the folder where you started the app. Each folder has its own list, so every project can have its own steps.

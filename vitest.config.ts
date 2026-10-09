@@ -14,12 +14,15 @@ export default defineConfig({
     include: ["libs/**/*.test.ts"],
     coverage: {
       provider: "v8",
-      include: ["libs/domain/src/index.ts", "libs/persistence/src/codec.ts"],
+      include: [
+        "libs/domain/src/index.ts",
+        "libs/persistence/src/codec.ts",
+        "libs/tui/src/banner.ts",
+      ],
       exclude: [
         "**/*.test.ts",
         "**/*.d.ts",
         "**/AGENTS.md",
-        "libs/tui/**",
         "apps/**",
         "libs/application/**",
         "libs/persistence/src/index.ts",

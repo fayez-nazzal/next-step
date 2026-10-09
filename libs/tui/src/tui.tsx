@@ -3,107 +3,7 @@ import { useBlur, useFocus, useKeyboard, useTerminalDimensions } from "@opentui/
 import type { InputRenderable, KeyEvent, TextareaRenderable } from "@opentui/core";
 import type { Step } from "@next-step/domain";
 import type { StepApplication } from "@next-step/application";
-
-const ACTIVE_STEP_FONT_SIZE = 5;
-
-const BIG_GLYPHS: Readonly<Record<string, readonly string[]>> = {
-  A: ["01110", "10001", "10001", "11111", "10001"],
-  B: ["11110", "10001", "11110", "10001", "11110"],
-  C: ["01111", "10000", "10000", "10000", "01111"],
-  D: ["11110", "10001", "10001", "10001", "11110"],
-  E: ["11111", "10000", "11110", "10000", "11111"],
-  F: ["11111", "10000", "11110", "10000", "10000"],
-  G: ["01111", "10000", "10111", "10001", "01111"],
-  H: ["10001", "10001", "11111", "10001", "10001"],
-  I: ["111", "010", "010", "010", "111"],
-  J: ["00111", "00010", "00010", "10010", "01100"],
-  K: ["10001", "10010", "11100", "10010", "10001"],
-  L: ["10000", "10000", "10000", "10000", "11111"],
-  M: ["10001", "11011", "10101", "10001", "10001"],
-  N: ["10001", "11001", "10101", "10011", "10001"],
-  O: ["01110", "10001", "10001", "10001", "01110"],
-  P: ["11110", "10001", "11110", "10000", "10000"],
-  Q: ["01110", "10001", "10101", "10010", "01101"],
-  R: ["11110", "10001", "11110", "10010", "10001"],
-  S: ["01111", "10000", "01110", "00001", "11110"],
-  T: ["11111", "00100", "00100", "00100", "00100"],
-  U: ["10001", "10001", "10001", "10001", "01110"],
-  V: ["10001", "10001", "10001", "01010", "00100"],
-  W: ["10001", "10001", "10101", "11011", "10001"],
-  X: ["10001", "01010", "00100", "01010", "10001"],
-  Y: ["10001", "01010", "00100", "00100", "00100"],
-  Z: ["11111", "00010", "00100", "01000", "11111"],
-  "0": ["01110", "10011", "10101", "11001", "01110"],
-  "1": ["010", "110", "010", "010", "111"],
-  "2": ["11110", "00001", "01110", "10000", "11111"],
-  "3": ["11110", "00001", "01110", "00001", "11110"],
-  "4": ["10010", "10010", "11111", "00010", "00010"],
-  "5": ["11111", "10000", "11110", "00001", "11110"],
-  "6": ["01111", "10000", "11110", "10001", "01110"],
-  "7": ["11111", "00001", "00010", "00100", "00100"],
-  "8": ["01110", "10001", "01110", "10001", "01110"],
-  "9": ["01110", "10001", "01111", "00001", "11110"],
-  "!": ["1", "1", "1", "0", "1"],
-  '"': ["101", "101", "000", "000", "000"],
-  "#": ["01010", "11111", "01010", "11111", "01010"],
-  $: ["01111", "10100", "01110", "00101", "11110"],
-  "%": ["11001", "11010", "00100", "01011", "10011"],
-  "&": ["01100", "10010", "01100", "10010", "01101"],
-  "'": ["1", "1", "0", "0", "0"],
-  "(": ["001", "010", "010", "010", "001"],
-  ")": ["100", "010", "010", "010", "100"],
-  "*": ["000", "101", "010", "101", "000"],
-  "+": ["000", "010", "111", "010", "000"],
-  ",": ["0", "0", "0", "1", "1"],
-  "-": ["000", "000", "111", "000", "000"],
-  ".": ["0", "0", "0", "0", "1"],
-  "/": ["001", "001", "010", "100", "100"],
-  ":": ["0", "1", "0", "1", "0"],
-  ";": ["0", "1", "0", "1", "1"],
-  "<": ["001", "010", "100", "010", "001"],
-  "=": ["000", "111", "000", "111", "000"],
-  ">": ["100", "010", "001", "010", "100"],
-  "?": ["11110", "00001", "00110", "00000", "00100"],
-  "@": ["01110", "10001", "10111", "10000", "01110"],
-  "[": ["11", "10", "10", "10", "11"],
-  "\\": ["100", "100", "010", "001", "001"],
-  "]": ["11", "01", "01", "01", "11"],
-  "^": ["010", "101", "000", "000", "000"],
-  _: ["00000", "00000", "00000", "00000", "11111"],
-  "`": ["10", "01", "00", "00", "00"],
-  "{": ["001", "010", "110", "010", "001"],
-  "|": ["1", "1", "1", "1", "1"],
-  "}": ["100", "010", "011", "010", "100"],
-  "~": ["000", "010", "101", "000", "000"],
-  " ": ["0", "0", "0", "0", "0"],
-};
-function renderActiveStep(title: string, terminalWidth: number) {
-  const characters = [...title.toLocaleUpperCase()];
-  const maxCharacters = Math.max(1, Math.floor((terminalWidth + 1) / 6));
-  const lines: string[] = [];
-
-  for (let offset = 0; offset < characters.length; offset += maxCharacters) {
-    const chunk = characters.slice(offset, offset + maxCharacters);
-    const rowCount = Math.max(
-      ACTIVE_STEP_FONT_SIZE,
-      ...chunk.map((char) => BIG_GLYPHS[char]?.[0]?.length ?? ACTIVE_STEP_FONT_SIZE),
-    );
-    for (let row = 0; row < ACTIVE_STEP_FONT_SIZE; row++) {
-      lines.push(
-        chunk
-          .map((char) => {
-            const glyph = BIG_GLYPHS[char] ?? BIG_GLYPHS[" "]!;
-            const pixel = /^[A-Z0-9]$/.test(char) ? "█" : "#";
-            const rowText = (glyph[row] ?? "0").replaceAll("1", pixel).replaceAll("0", " ");
-            return " ".repeat(Math.max(0, rowCount - rowText.length)) + rowText;
-          })
-          .join(" "),
-      );
-    }
-  }
-
-  return lines.join("\n");
-}
+import { selectBanner } from "./banner";
 
 interface Props {
   application: StepApplication;
@@ -220,19 +120,17 @@ export function Tui({ application, track }: Props) {
     }
   });
 
+  const activeStep = steps[0];
+  // Account for the outer padding, scrollbox padding, header inset, and scrollbar.
+  const banner = activeStep ? selectBanner(activeStep.title, terminalWidth - 9) : null;
+
   return (
     <box width="100%" height="100%" justifyContent="center" alignItems="center" padding={1}>
-      <scrollbox
-        width="100%"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        padding={1}
-        scrollY
-      >
+      <scrollbox width="100%" height="100%" padding={1} scrollY>
         <box
           flexDirection="column"
           width="100%"
+          flexShrink={0}
           gap={1}
           alignItems="center"
           justifyContent="center"
@@ -243,16 +141,33 @@ export function Tui({ application, track }: Props) {
             alignItems="center"
             justifyContent="center"
             padding={2}
+            flexShrink={0}
             gap={1}
           >
-            <text width="100%" textAlign="center" fg="#75d5c3">
-              <strong>
-                {steps[0] ? renderActiveStep(steps[0].title, terminalWidth - 4) : "Nothing queued."}
-              </strong>
-            </text>
-            {steps[0]?.description && (
-              <text width="100%" textAlign="center" fg="#8b929c">
-                {steps[0].description}
+            <box
+              width="100%"
+              height={banner?.height ?? "auto"}
+              minHeight={1}
+              flexShrink={0}
+              alignItems="center"
+              justifyContent="center"
+            >
+              {activeStep && banner ? (
+                <ascii-font
+                  text={activeStep.title}
+                  font={banner.font}
+                  color="#75d5c3"
+                  maxWidth="100%"
+                />
+              ) : (
+                <text width="100%" textAlign="center" wrapMode="word" fg="#75d5c3">
+                  <strong>{activeStep?.title ?? "Nothing queued."}</strong>
+                </text>
+              )}
+            </box>
+            {activeStep?.description && (
+              <text width="100%" textAlign="center" wrapMode="word" fg="#8b929c">
+                {activeStep.description}
               </text>
             )}
           </box>

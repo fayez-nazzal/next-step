@@ -120,9 +120,13 @@ export function Tui({ application, track }: Props) {
     }
   });
 
-  const activeStep = steps[0];
   // Account for the outer padding, scrollbox padding, header inset, and scrollbar.
-  const banner = activeStep ? selectBanner(activeStep.title, terminalWidth - 9) : null;
+  const contentWidth = terminalWidth - 9;
+  // Fixed left gutter holds the selection chevron so titles never shift on selection change.
+  const gutterWidth = 3;
+  const chevronHeight = 4;
+  const chevronFits = contentWidth >= gutterWidth;
+  const titleWidth = contentWidth - gutterWidth - 1;
 
   return (
     <box width="100%" height="100%" justifyContent="center" alignItems="center" padding={1}>
@@ -135,54 +139,92 @@ export function Tui({ application, track }: Props) {
           alignItems="center"
           justifyContent="center"
         >
-          <box
-            width="100%"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            padding={2}
-            flexShrink={0}
-            gap={1}
-          >
+          {steps.length === 0 ? (
             <box
               width="100%"
-              height={banner?.height ?? "auto"}
-              minHeight={1}
-              flexShrink={0}
+              flexDirection="column"
               alignItems="center"
               justifyContent="center"
+              padding={2}
+              flexShrink={0}
             >
-              {activeStep && banner ? (
-                <ascii-font
-                  text={activeStep.title}
-                  font={banner.font}
-                  color="#75d5c3"
-                  maxWidth="100%"
-                />
-              ) : (
-                <text width="100%" textAlign="center" wrapMode="word" fg="#75d5c3">
-                  <strong>{activeStep?.title ?? "Nothing queued."}</strong>
-                </text>
-              )}
-            </box>
-            {activeStep?.description && (
-              <text width="100%" textAlign="center" wrapMode="word" fg="#8b929c">
-                {activeStep.description}
+              <text width="100%" textAlign="center" wrapMode="word" fg="#75d5c3">
+                <strong>Nothing queued.</strong>
               </text>
-            )}
-          </box>
-          {steps.length > 1 && (
-            <box flexDirection="column" gap={1} paddingLeft={2} alignSelf="flex-start">
-              {steps.slice(1).map((step) => (
-                <box key={step.id} flexDirection="column">
-                  <text fg={terminalFocused && step.id === selected ? "#d5d8dc" : "#8b929c"}>
-                    {terminalFocused && step.id === selected ? "› " : ""}
-                    {step.title}
-                  </text>
-                  {step.description && <text fg="#707781">{step.description}</text>}
-                </box>
-              ))}
             </box>
+          ) : (
+            steps.map((step, index) => {
+              const banner = selectBanner(
+                step.title,
+                titleWidth,
+                index === 0 ? "active" : "queued",
+              );
+              const isSelected = terminalFocused && step.id === selected;
+              const titleColor = index === 0 ? "#75d5c3" : isSelected ? "#78c5b7" : "#67b6ac";
+              const descriptionColor = index === 0 ? "#8b929c" : "#707781";
+              const titleRowHeight = Math.max(banner?.height ?? 1, chevronHeight);
+              return (
+                <box
+                  key={step.id}
+                  width="100%"
+                  flexDirection="row"
+                  alignItems="flex-start"
+                  justifyContent="center"
+                  padding={2}
+                  flexShrink={0}
+                  gap={1}
+                >
+                  <box width={gutterWidth} height={titleRowHeight} flexShrink={0}>
+                    {isSelected && chevronFits && (
+                      <box marginTop={Math.floor((titleRowHeight - chevronHeight) / 2)}>
+                        <ascii-font text="›" font="tiny" color="#588f89" />
+                      </box>
+                    )}
+                  </box>
+                  <box
+                    flexGrow={1}
+                    flexShrink={1}
+                    flexDirection="column"
+                    alignItems="center"
+                    gap={1}
+                  >
+                    <box
+                      width="100%"
+                      minHeight={titleRowHeight}
+                      flexShrink={0}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {banner ? (
+                        <ascii-font
+                          text={step.title}
+                          font={banner.font}
+                          color={titleColor}
+                          maxWidth="100%"
+                        />
+                      ) : (
+                        <text width="100%" textAlign="center" wrapMode="word" fg={titleColor}>
+                          <strong>{step.title}</strong>
+                        </text>
+                      )}
+                    </box>
+                    <box
+                      width="100%"
+                      minHeight={1}
+                      flexShrink={0}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {step.description ? (
+                        <text width="100%" textAlign="center" wrapMode="word" fg={descriptionColor}>
+                          {step.description}
+                        </text>
+                      ) : null}
+                    </box>
+                  </box>
+                </box>
+              );
+            })
           )}
           {editor && (
             <box flexDirection="column" gap={1}>

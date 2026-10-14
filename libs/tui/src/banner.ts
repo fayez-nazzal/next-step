@@ -1,7 +1,14 @@
 import { fonts, measureText } from "@opentui/core";
 
-export function selectBanner(title: string, availableWidth: number) {
-  for (const font of ["block", "tiny"] as const) {
+export type BannerRole = "active" | "queued";
+
+export function selectBanner(
+  title: string,
+  availableWidth: number,
+  role: BannerRole,
+): { font: "block" | "tiny"; width: number; height: number } | null {
+  const candidates = role === "active" ? (["block", "tiny"] as const) : (["tiny"] as const);
+  for (const font of candidates) {
     const dimensions = measureText({ text: title, font });
     if (dimensions.width <= availableWidth) {
       for (const character of title) {

@@ -88,3 +88,45 @@ describe("compact banner letter geometry", () => {
     }
   });
 });
+
+describe("compact selection chevron geometry", () => {
+  const tinyChars = fonts.tiny.chars as Record<string, string[]>;
+
+  function chevronPixels() {
+    const rows = tinyChars["›"] as string[];
+    return rows.flatMap((row) => {
+      const cells = [...row];
+      expect(cells).toHaveLength(3);
+      for (const cell of cells) expect(halfPixels[cell]).toBeDefined();
+      return [0, 1].map((half) => cells.map((cell) => halfPixels[cell]?.[half]).join(""));
+    });
+  }
+
+  it("renders as a supported three-column, four-row compact glyph", () => {
+    expect(measureText({ text: "›", font: "tiny" })).toMatchObject({ width: 3, height: 4 });
+    expect(chevronPixels()).toHaveLength(8);
+  });
+
+  it("draws a connected five-pixel right-facing chevron centered in the cell", () => {
+    const pixels = chevronPixels();
+    const ink: Array<{ x: number; y: number }> = [];
+    for (const [y, row] of pixels.entries()) {
+      for (const [x, pixel] of [...row].entries()) {
+        if (pixel === "1") ink.push({ x, y });
+      }
+    }
+    const rows = ink.map((point) => point.y);
+    const top = Math.min(...rows);
+    const bottom = Math.max(...rows);
+    const center = (top + bottom) / 2;
+
+    expect(bottom - top + 1).toBe(5);
+    expect(ink).toHaveLength(5);
+    expect(connectedInk(pixels)).toBe(true);
+    const rightmost = Math.max(...ink.map((point) => point.x));
+    expect(ink.filter((point) => point.x === rightmost)).toEqual([{ x: rightmost, y: center }]);
+    for (const point of ink) {
+      expect(ink).toContainEqual({ x: point.x, y: 2 * center - point.y });
+    }
+  });
+});

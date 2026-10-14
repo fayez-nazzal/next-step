@@ -46,7 +46,7 @@ Most keys act on the selected step, and the first step starts out selected.
 
 While typing, press `Enter` to save or `Esc` to cancel.
 
-The active title uses OpenTUI's `block` banner when it fits and the compact, four-row `tiny` banner in smaller windows. Long titles and characters the banner fonts cannot display use normal bold text instead, so nothing is clipped or left blank. Descriptions and queued steps stay in normal terminal text.
+Every step title is drawn as a centered banner. The active step uses OpenTUI's `block` font when it fits and the compact, four-row `tiny` font in smaller windows; queued steps always use `tiny`. The selected step gets a `›` chevron above its title, shown only while the terminal has focus. Each step's description sits under its title. Long titles and characters the banner fonts cannot display use normal centered text instead, so nothing is clipped or left blank.
 
 ## Where your steps are saved
 
@@ -65,4 +65,4 @@ bun run check
 
 `bun run check` runs every check and builds the app. Use `bun start` to run it straight from the source code.
 
-Bun automatically applies `patches/@opentui%2Fcore@0.5.14.patch` during installation. It rebuilds the compact font on a seven-pixel-high grid, packed into four terminal rows with half-block characters. All letters share a cap line and baseline; middle strokes, including those in `E`, `H`, and `S`, sit on the true center row. Most letters are five columns wide, with narrower `I`, `J`, and `L`, so longer titles may fall back to native text sooner. Digits and punctuation use the same grid. The large banner font is unchanged.
+Bun automatically applies `patches/@opentui%2Fcore@0.5.14.patch` during installation. It rebuilds the compact font on a seven-pixel-high grid, packed into four terminal rows with half-block characters, and adds the `›` chevron glyph. All letters share a cap line and baseline; middle strokes, including those in `E`, `H`, and `S`, sit on the true center row. Most letters are five columns wide, with narrower `I`, `J`, and `L`, so longer titles may fall back to native text sooner. Digits and punctuation use the same grid. The large banner font is unchanged.

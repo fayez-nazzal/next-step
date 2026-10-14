@@ -2,10 +2,10 @@ diff --git a/node_modules/@opentui/core/.bun-tag-18013012a17f0df5 b/.bun-tag-180
 new file mode 100644
 index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
 diff --git a/chunk-bun-sjw2d9bq.js b/chunk-bun-sjw2d9bq.js
-index a28320a281f82eea0833ad1f5868d0f8c74c9602..6ffdfa981f10855d54566445fd2bf3377644244b 100644
+index a28320a281f82eea0833ad1f5868d0f8c74c9602..e4ac5d33e00ec50a559081c8927aa8dbf7f4d7f5 100644
 --- a/chunk-bun-sjw2d9bq.js
 +++ b/chunk-bun-sjw2d9bq.js
-@@ -2905,68 +2905,68 @@ var tiny_default = {
+@@ -2905,68 +2905,69 @@ var tiny_default = {
    version: "0.2.0",
    homepage: "https://github.com/dominikwilkowski/cfonts",
    colors: 1,
@@ -130,15 +130,16 @@ index a28320a281f82eea0833ad1f5868d0f8c74c9602..6ffdfa981f10855d54566445fd2bf337
 +    ",": ["  ", "  ", " \u2588", "\u2580 "],
 +    "'": ["\u2588", " ", " ", " "],
 +    '"': ["\u2588 \u2588", "   ", "   ", "   "],
-+    " ": [" ", " ", " ", " "]
++    " ": [" ", " ", " ", " "],
++    "\u203A": ["\u2584  ", " \u2580\u2584", "\u2584\u2580 ", "   "]
    }
  };
  // src/lib/fonts/huge.json
 diff --git a/chunk-node-80p7e6t6.js b/chunk-node-80p7e6t6.js
-index 82915fa04684c45affab3b7297e8917f89dc5dc6..e274129755515c2e1d46c9f80137885bc554c2db 100644
+index 82915fa04684c45affab3b7297e8917f89dc5dc6..f7d8ab953e6ffda9526da25b1c160785a81eb3a4 100644
 --- a/chunk-node-80p7e6t6.js
 +++ b/chunk-node-80p7e6t6.js
-@@ -2939,68 +2939,68 @@ var tiny_default = {
+@@ -2939,68 +2939,69 @@ var tiny_default = {
    version: "0.2.0",
    homepage: "https://github.com/dominikwilkowski/cfonts",
    colors: 1,
@@ -263,7 +264,8 @@ index 82915fa04684c45affab3b7297e8917f89dc5dc6..e274129755515c2e1d46c9f80137885b
 +    ",": ["  ", "  ", " \u2588", "\u2580 "],
 +    "'": ["\u2588", " ", " ", " "],
 +    '"': ["\u2588 \u2588", "   ", "   ", "   "],
-+    " ": [" ", " ", " ", " "]
++    " ": [" ", " ", " ", " "],
++    "›": ["▄  ", " ▀▄", "▄▀ ", "   "]
    }
  };
  // src/lib/fonts/huge.json
